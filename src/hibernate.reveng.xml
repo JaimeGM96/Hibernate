@@ -41,8 +41,8 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="practicahibernate"/>
-  <table-filter match-name="jugador"/>
-  <table-filter match-name="hermandad"/>
   <table-filter match-name="personaje"/>
+  <table-filter match-name="hermandad"/>
   <table-filter match-name="faccion"/>
+  <table-filter match-name="jugador"/>
 </hibernate-reverse-engineering>

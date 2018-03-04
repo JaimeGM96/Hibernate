@@ -7,10 +7,10 @@ package practicahibernate;
 
 import java.util.Iterator;
 import java.util.Scanner;
-import modelos.Faccion;
-import modelos.Hermandad;
-import modelos.Jugador;
-import modelos.Personaje;
+import modelo.Faccion;
+import modelo.Hermandad;
+import modelo.Jugador;
+import modelo.Personaje;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
