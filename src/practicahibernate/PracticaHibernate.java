@@ -110,9 +110,36 @@ public class PracticaHibernate {
         return faccion;
     }
     
+    public static void disminuirPersonajesHermandad(Faccion faccion){
+        Query query = session.createQuery("from Jugador");
+        Iterator it = query.iterate();
+        while(it.hasNext()){
+            Jugador jugador = (Jugador) it.next();
+            if(jugador.getFaccion().getId() == faccion.getId()){
+                Query query2 = session.createQuery("from Personaje");
+                Iterator it2 = query2.iterate();
+                while(it2.hasNext()){
+                    Personaje personaje = (Personaje) it2.next();
+                    if(personaje.getJugador().getId() == jugador.getId()){
+                        Query query3 = session.createQuery("from Hermandad");
+                        Iterator it3 = query3.iterate();
+                        while(it3.hasNext()){
+                            Hermandad hermandad = (Hermandad) it3.next();
+                            if(hermandad.getId() == personaje.getHermandad().getId()){
+                                hermandad.setCantidadPersonajes(hermandad.getCantidadPersonajes() - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     public static void eliminarFaccion(){
+        Faccion faccion = buscarFaccion();
+        disminuirPersonajesHermandad(faccion);
         session.beginTransaction();
-        session.delete(buscarFaccion());
+        session.delete(faccion);
         session.getTransaction().commit();
     }
     
@@ -184,10 +211,29 @@ public class PracticaHibernate {
         return jugador;
     }
     
+    public static void disminuir(Jugador jugador){
+        Query query2 = session.createQuery("from Personaje");
+        Iterator it2 = query2.iterate();
+        while(it2.hasNext()){
+            Personaje personaje = (Personaje) it2.next();
+            if(personaje.getJugador().getId() == jugador.getId()){
+                Query query3 = session.createQuery("from Hermandad");
+                Iterator it3 = query3.iterate();
+                while(it3.hasNext()){
+                    Hermandad hermandad = (Hermandad) it3.next();
+                    if(hermandad.getId() == personaje.getHermandad().getId()){
+                        hermandad.setCantidadPersonajes(hermandad.getCantidadPersonajes() - 1);
+                    }
+                }
+            }
+        }
+    }
+    
     public static void eliminarJugador(){
         Jugador jugador = new Jugador();
         session.beginTransaction();
         jugador = buscarJugador();
+        disminuir(jugador);
         jugador.getFaccion().setNumeroJugadores(jugador.getFaccion().getNumeroJugadores() - 1);
         session.delete(jugador);
         session.getTransaction().commit();
@@ -215,7 +261,7 @@ public class PracticaHibernate {
         int numeroJugadores = 0, nivel = 1;
         Personaje nuevoPersonaje;
         
-        System.out.print("Introduce el nombre del nuevo jugador: ");
+        System.out.print("Introduce el nombre del nuevo personaje: ");
         basura = leer.nextLine();
         nombre = leer.nextLine();
         jugador = buscarJugador();
